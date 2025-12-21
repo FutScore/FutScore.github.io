@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Paper,
@@ -12,20 +12,15 @@ import {
   Box,
   Grid,
   Alert,
-  CircularProgress,
   SelectChangeEvent,
   Checkbox,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../store/slices/cartSlice';
-import { OrderItem } from '../types';
 import { AppDispatch, RootState } from '../store';
-import axios from 'axios';
-import { API_BASE_URL } from '../api';
-import PreviousOrders from '../components/PreviousOrders';
+import { OrderItem } from '../types';
 import DragDropZone from '../components/DragDropZone';
 import PatchSelection from '../components/PatchSelection';
-import { Add as AddIcon } from '@mui/icons-material';
 
 
 
@@ -60,22 +55,7 @@ const OrderForm = () => {
     reader.readAsDataURL(file);
   };
 
-  const handlePatchImagesChange = (files: FileList) => {
-    const readers: Promise<string>[] = Array.from(files).map(file => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    });
-    Promise.all(readers).then(images => {
-      setCurrentItem(prev => ({
-        ...prev,
-        patch_images: [...(prev.patch_images || []), ...images],
-      }));
-    });
-  };
+  // handlePatchImagesChange removed - not used
 
 
 

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { Order, OrderState } from '../../types';
+import { Order } from '../../types';
 import { API_BASE_URL } from '../../api';
 
 interface OrderSliceState {

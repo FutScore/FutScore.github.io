@@ -3,14 +3,9 @@ import {
   Box,
   Paper,
   Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Button,
   Divider,
-  Chip,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // Use rsuite Tree (open-source & styled)
 import { Tree } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';

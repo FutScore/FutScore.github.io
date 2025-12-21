@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
-  Paper,
   Button,
   Dialog,
   DialogTitle,
@@ -14,19 +13,11 @@ import {
   Card,
   CardContent,
   CardActions,
-  Divider,
 } from '@mui/material';
 import { CloudUpload, Image, Business } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import { updateAppSettings } from '../store/slices/appSettingsSlice';
-
-interface AppSettings {
-  logo?: string;
-  backgroundImage?: string;
-  logoHeight?: number;
-  backgroundOpacity?: number;
-}
 
 const AppCustomization: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

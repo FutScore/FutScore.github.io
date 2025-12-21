@@ -102,9 +102,7 @@ const PatchSelection: React.FC<PatchSelectionProps> = ({
     return patch.startsWith('data:');
   };
 
-  const isPredefinedPatch = (patch: string) => {
-    return predefinedPatches.some(p => p.image === patch);
-  };
+  // isPredefinedPatch function removed - not used
 
   return (
     <Box>

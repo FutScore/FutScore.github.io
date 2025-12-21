@@ -14,15 +14,12 @@ import {
   IconButton as MuiIconButton,
   Drawer,
   List,
-  ListItem,
   ListItemText,
   ListItemButton,
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
-import HomeIcon from '@mui/icons-material/Home';
-import EditIcon from '@mui/icons-material/Edit';
 import PersonIcon from '@mui/icons-material/Person';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
@@ -30,9 +27,6 @@ import { logout } from '../store/slices/authSlice';
 import { fetchAppSettings } from '../store/slices/appSettingsSlice';
 import NotificationBell from './NotificationBell';
 import { useTheme } from '@mui/material/styles';
-import axios from 'axios';
-import { API_BASE_URL } from '../api';
-import { setUser } from '../store/slices/authSlice';
 
 const Navbar = () => {
   const navigate = useNavigate();

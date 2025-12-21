@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
 import Navbar from './components/Navbar';
 import AppBackground from './components/AppBackground';
 import Login from './pages/Login';
-import Register from './pages/Register';
 import OrderForm from './pages/OrderForm';
 import Cart from './pages/Cart';
 import AdminPanel from './pages/AdminPanel';

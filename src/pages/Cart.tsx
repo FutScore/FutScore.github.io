@@ -14,7 +14,6 @@ import {
   useMediaQuery,
   ToggleButton,
   ToggleButtonGroup,
-  Divider,
   List,
   ListItem,
   ListItemText,
@@ -29,8 +28,6 @@ import {
   DialogActions,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { removeFromCart, clearCart, updateCartItem } from '../store/slices/cartSlice';
@@ -39,7 +36,6 @@ import { getAddresses } from '../store/slices/addressSlice';
 import { AppDispatch } from '../store';
 import axios from 'axios';
 import { API_BASE_URL } from '../api';
-import AddressManager from '../components/AddressManager';
 import PatchSelection from '../components/PatchSelection';
 import Check from '@mui/icons-material/Check';
 
@@ -62,7 +58,6 @@ const Cart = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { addresses } = useSelector((state: RootState) => state.address);
   const [address, setAddress] = useState(initialAddress);
-  const [selectedAddress, setSelectedAddress] = useState<any>(null);
   const [addressMode, setAddressMode] = useState<'manual' | 'saved'>('manual');
   const [proofImage, setProofImage] = useState<string>('');
   const [proofReference, setProofReference] = useState<string>('');
@@ -103,7 +98,6 @@ const Cart = () => {
     if (newMode !== null) {
       setAddressMode(newMode);
       if (newMode === 'manual') {
-        setSelectedAddress(null);
         setAddress(initialAddress);
       } else {
         // Load saved addresses if not already loaded
@@ -115,7 +109,6 @@ const Cart = () => {
   };
 
   const handleSelectAddress = (selectedAddr: any) => {
-    setSelectedAddress(selectedAddr);
     setAddress(selectedAddr);
   };
 

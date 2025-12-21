@@ -66,12 +66,7 @@ const AddressManager = ({ userId, onSelect }: { userId: number, onSelect?: (addr
     dispatch(removeAddress({ id, userId }));
   };
 
-  const handleSelect = (address: any) => {
-    // In select mode, fill the form for editing (like pencil)
-    setEditing(address);
-    setForm(address);
-    if (onSelect) onSelect(address);
-  };
+  // handleSelect is used via handleEdit when onSelect prop is provided
 
   const handleCancel = () => {
     setEditing(null);

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Container,
-  Paper,
   Typography,
   Box,
   Card,
@@ -18,7 +17,6 @@ import {
   Grid,
   useTheme,
   useMediaQuery,
-  Divider,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -41,7 +39,7 @@ const UserPanel = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  // isMobile removed - not used
 
   // State for dialogs
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);

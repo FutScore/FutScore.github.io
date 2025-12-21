@@ -46,7 +46,7 @@ import axios from 'axios';
 import { API_BASE_URL } from '../api';
 // @ts-ignore
 import { saveAs } from 'file-saver';
-import { Order, OrderItem, Pack, PackItem } from '../types';
+import { Order, Pack } from '../types';
 import ProductManagement from '../components/ProductManagement';
 import { sendOrderEmail, EmailTemplateParams } from '../services/emailService';
 import DragDropZone from '../components/DragDropZone';
@@ -87,10 +87,8 @@ const AdminPanel = () => {
   const [openOrderDialog, setOpenOrderDialog] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
   const [orderStatus, setOrderStatus] = useState<Order['status'] | ''>('');
-  const [orderStatusLoading, setOrderStatusLoading] = useState(false);
   const [orderStatusError, setOrderStatusError] = useState<string | null>(null);
   const [orderPrice, setOrderPrice] = useState<number>(0);
-  const [orderPriceLoading, setOrderPriceLoading] = useState(false);
   const [orderPriceError, setOrderPriceError] = useState<string | null>(null);
   const [addressForm, setAddressForm] = useState({
     address_nome: '',
@@ -131,7 +129,7 @@ const AdminPanel = () => {
     trackingImages: [],
     items: []
   });
-  const [trackingLoading, setTrackingLoading] = useState(false);
+  // trackingLoading removed - not used
   const [trackingError, setTrackingError] = useState<string | null>(null);
 
   // Pending changes tracking
@@ -283,10 +281,10 @@ const AdminPanel = () => {
     setCurrentPage(page);
     dispatch(fetchOrders({ page, limit: pagination?.limit || 20 }));
   };
-  const [usersPage, setUsersPage] = useState(1);
-  const [packsPage, setPacksPage] = useState(1);
-  const [shirtTypesPage, setShirtTypesPage] = useState(1);
-  const [patchesPage, setPatchesPage] = useState(1);
+  const [usersPage] = useState(1);
+  const [packsPage] = useState(1);
+  const [shirtTypesPage] = useState(1);
+  const [patchesPage] = useState(1);
 
   // Helper functions for dynamic order states
   // No AdminPanel, sempre usamos name_admin (ou name como fallback)
@@ -518,7 +516,6 @@ const AdminPanel = () => {
   // Update order status
   const handleUpdateOrderStatus = async () => {
     if (!selectedOrder) return;
-    setOrderStatusLoading(true);
     setOrderStatusError(null);
     try {
       await dispatch(updateOrderStatus({ orderId: selectedOrder.id, status: orderStatus }));
@@ -528,8 +525,6 @@ const AdminPanel = () => {
         try {
           const user = users.find(u => u.id === selectedOrder.user_id);
           if (user && (user.email || user.userEmail)) {
-            const emailToUse = user.userEmail || user.email;
-            
             // Prepare email template parameters
             const templateParams: EmailTemplateParams = {
               order_number: selectedOrder.id.toString()
@@ -544,10 +539,6 @@ const AdminPanel = () => {
         }
       }
       
-      // Optimistically update local state
-      const updatedOrders = orders.map((o) =>
-        o.id === selectedOrder.id ? { ...o, status: orderStatus } : o
-      );
       // This part is tricky because Redux state is immutable.
       // A better way is to refetch orders or have the slice update the state.
       // For now, let's just close the dialog.
@@ -555,15 +546,12 @@ const AdminPanel = () => {
       dispatch(fetchOrders({ page: currentPage, limit: 10 }));
     } catch (err: any) {
       setOrderStatusError(err.response?.data?.error || 'Falha ao atualizar o estado');
-    } finally {
-    setOrderStatusLoading(false);
     }
   };
 
   // Update order price
   const handleUpdateOrderPrice = async () => {
     if (!selectedOrder) return;
-    setOrderPriceLoading(true);
     setOrderPriceError(null);
     try {
       const token = localStorage.getItem('token');
@@ -581,8 +569,6 @@ const AdminPanel = () => {
       setOrderPriceError(null);
     } catch (err: any) {
       setOrderPriceError(err.response?.data?.error || 'Falha ao atualizar o preço');
-    } finally {
-      setOrderPriceLoading(false);
     }
   };
 
@@ -590,7 +576,6 @@ const AdminPanel = () => {
   const handleUpdateOrderTracking = async () => {
     if (!selectedOrder || (!trackingText && trackingImages.length === 0 && trackingVideos.length === 0)) return;
     
-    setTrackingLoading(true);
     setTrackingError(null);
     
     try {
@@ -642,7 +627,7 @@ const AdminPanel = () => {
     } catch (error: any) {
       setTrackingError(error.response?.data?.message || 'Erro ao atualizar tracking');
     } finally {
-      setTrackingLoading(false);
+      // trackingLoading removed
     }
   };
 
@@ -1088,7 +1073,7 @@ const AdminPanel = () => {
 
     setRemovingItemId(itemId);
     try {
-      const response = await axios.delete(`${API_BASE_URL}/.netlify/functions/deleteOrderItem?orderItemId=${itemId}`);
+      await axios.delete(`${API_BASE_URL}/.netlify/functions/deleteOrderItem?orderItemId=${itemId}`);
       
       // Reload order to get updated items and price
       const res = await axios.get(`${API_BASE_URL}/.netlify/functions/getorders?orderId=${selectedOrder.id}`);
@@ -1172,7 +1157,7 @@ const AdminPanel = () => {
 
     setAddingItem(true);
     try {
-      const response = await axios.post(`${API_BASE_URL}/.netlify/functions/addOrderItem`, {
+      await axios.post(`${API_BASE_URL}/.netlify/functions/addOrderItem`, {
         orderId: selectedOrder.id,
         productId: selectedProductForOrder.id,
         shirtTypeId: productConfig.shirtTypeId,
@@ -1332,18 +1317,7 @@ const AdminPanel = () => {
     }
   };
 
-  const handleUpdateInstagramName = async (userId: string, instagramName: string) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.put(`${API_BASE_URL}/.netlify/functions/updateInstagramName/${userId}`, 
-        { instagramName },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      fetchUsers(usersPage); // Refresh the list
-    } catch (err: any) {
-      alert('Falha ao atualizar nome do Instagram');
-    }
-  };
+  // handleUpdateInstagramName removed - not used
 
   // Patch management functions
   const fetchPatches = async (page = 1) => {

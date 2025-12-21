@@ -21,7 +21,6 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  SelectChangeEvent,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
@@ -31,7 +30,6 @@ import axios from 'axios';
 import { API_BASE_URL } from '../api';
 import { addToCart } from '../store/slices/cartSlice';
 import { OrderItem } from '../types';
-import Checkbox from '@mui/material/Checkbox';
 import FilterSidebar from '../components/FilterSidebar';
 import PatchSelection from '../components/PatchSelection';
 // Removido DragDropZone: passamos a usar URL direto da imagem
