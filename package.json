@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://diogomendes.me/FEfutscore",
+  "homepage": "/",
   "proxy": "cerulean-kleicha-c3f93a.netlify.app",
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
