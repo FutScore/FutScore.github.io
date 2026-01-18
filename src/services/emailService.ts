@@ -1,22 +1,33 @@
-import emailjs from 'emailjs-com';
-
-// Initialize EmailJS with your public key
-emailjs.init('sYfnZeIDOxAl4y-r9');
+import axios from 'axios';
+import { API_BASE_URL } from '../api';
 
 export interface EmailTemplateParams {
   order_number: string;
+  to: string; // Recipient email address
+  subject?: string;
+  html?: string;
+  text?: string;
 }
 
 export const sendOrderEmail = async (templateParams: EmailTemplateParams): Promise<void> => {
   try {
-    const response = await emailjs.send(
-      'service_pvd829d',
-      'template_myzm85l', // You'll need to create this template in EmailJS
-      templateParams as any,
-      'sYfnZeIDOxAl4y-r9'
+    const response = await axios.post(
+      `${API_BASE_URL}/.netlify/functions/sendemail`,
+      {
+        to: templateParams.to,
+        orderNumber: templateParams.order_number,
+        subject: templateParams.subject,
+        html: templateParams.html,
+        text: templateParams.text,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
     );
     
-    console.log('Email sent successfully:', response);
+    console.log('Email sent successfully:', response.data);
   } catch (error) {
     console.error('Error sending email:', error);
     throw error;

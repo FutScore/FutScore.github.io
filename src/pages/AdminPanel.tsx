@@ -525,9 +525,12 @@ const AdminPanel = () => {
         try {
           const user = users.find(u => u.id === selectedOrder.user_id);
           if (user && (user.email || user.userEmail)) {
+            const emailToUse = user.userEmail || user.email;
+            
             // Prepare email template parameters
             const templateParams: EmailTemplateParams = {
-              order_number: selectedOrder.id.toString()
+              order_number: selectedOrder.id.toString(),
+              to: emailToUse
             };
 
             await sendOrderEmail(templateParams);
