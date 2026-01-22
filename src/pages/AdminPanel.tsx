@@ -1209,19 +1209,27 @@ const AdminPanel = () => {
     let total = 0;
     for (const item of order.items) {
       const qty = Number(item.quantity || 1);
-      let base = Number(item.cost_price || 0) * qty;
-      if (item.product_type === 'tshirt') {
-        const patchesCount = Array.isArray(item.patch_images) ? item.patch_images.length : 0;
-        base += patchesCount * patchPrice * qty;
-        if (personalization != null) {
-          const hasPers = (item.player_name && String(item.player_name).trim() !== '') || (item.numero && String(item.numero).trim() !== '');
-          if (hasPers) base += Number(personalization) * qty;
-        } else {
-          if (item.numero && String(item.numero).trim() !== '') base += numberPrice * qty;
-          if (item.player_name && String(item.player_name).trim() !== '') base += namePrice * qty;
+      const costPrice = Number(item.cost_price || 0);
+      
+      // Se cost_price está definido, usar apenas esse valor (sem adicionar patches/personalização)
+      if (costPrice > 0) {
+        total += costPrice * qty;
+      } else {
+        // Se cost_price não está definido, calcular com patches e personalização
+        let base = 0;
+        if (item.product_type === 'tshirt') {
+          const patchesCount = Array.isArray(item.patch_images) ? item.patch_images.length : 0;
+          base += patchesCount * patchPrice * qty;
+          if (personalization != null) {
+            const hasPers = (item.player_name && String(item.player_name).trim() !== '') || (item.numero && String(item.numero).trim() !== '');
+            if (hasPers) base += Number(personalization) * qty;
+          } else {
+            if (item.numero && String(item.numero).trim() !== '') base += numberPrice * qty;
+            if (item.player_name && String(item.player_name).trim() !== '') base += namePrice * qty;
+          }
         }
+        total += base;
       }
-      total += base;
     }
     return total;
   };
