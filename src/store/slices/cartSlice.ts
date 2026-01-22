@@ -48,13 +48,16 @@ const cartSlice = createSlice({
             JSON.stringify(item.patch_images || []) === JSON.stringify(newItem.patch_images || [])
         );
       } else {
-        // It's a custom t-shirt
+        // It's a custom t-shirt - include image comparison to differentiate items with different images
         existingItem = state.items.find(
           (item) =>
             !item.product_id && // Ensure it's also a custom item
             item.size === newItem.size &&
             item.player_name === newItem.player_name &&
-            item.shirt_type_id === newItem.shirt_type_id
+            item.shirt_type_id === newItem.shirt_type_id &&
+            item.image_front === newItem.image_front &&
+            item.image_back === newItem.image_back &&
+            JSON.stringify(item.patch_images || []) === JSON.stringify(newItem.patch_images || [])
         );
       }
 
